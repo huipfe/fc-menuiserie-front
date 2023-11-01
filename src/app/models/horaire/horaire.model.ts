@@ -48,5 +48,14 @@ export class Horaire {
     set heure_apres_midi(value: string) {
         this.heure_apres_midi = value;
     }
+
+    serialize(){
+        return {
+            'horaire_id' : this.horaire_id,
+            'jour' : this.jour,
+            'heure_matin' : this.heure_matin,
+            'heure_apres_midi' : this.heure_apres_midi
+        }
+    }
 }
 
