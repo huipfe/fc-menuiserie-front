@@ -10,6 +10,17 @@ import { FooterComponent } from './footer/footer.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { HttpClientModule } from '@angular/common/http';
+import { AdminDashboardComponent } from './Component/admin-dashboard/admin-dashboard.component';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PopinConfirmationComponent } from './popin-confirmation/popin-confirmation.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatTableModule } from '@angular/material/table';
+import { PopinHoraireComponent } from './popin-horaire/popin-horaire.component';
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatSelectModule } from "@angular/material/select";
+import { MatCheckboxModule } from "@angular/material/checkbox";
+
 
 @NgModule({
   declarations: [
@@ -18,13 +29,23 @@ import { HttpClientModule } from '@angular/common/http';
     HomeComponent,
     NavbarComponent,
     FooterComponent,
+    AdminDashboardComponent,
+    PopinConfirmationComponent,
+    PopinHoraireComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatTooltipModule,
-    HttpClientModule
+    MatTabsModule,
+    MatDialogModule,
+    MatTableModule,
+    MatProgressSpinnerModule,
+    HttpClientModule,
+    MatFormFieldModule,
+    MatSelectModule, 
+    MatCheckboxModule
   ],
   providers: [],
   bootstrap: [AppComponent]

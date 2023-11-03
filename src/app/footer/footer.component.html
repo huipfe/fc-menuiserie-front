@@ -1,3 +1,15 @@
-<div>
-    <i class="fa fa-copyright bi bi-c-circle" aria-hidden="false">Copyright Menuiserie v. {{version}}</i>
+<div class="column-responsive">
+    <p class="text-responsive">© Menuiserie v. {{version}}</p> 
+    <div class="horaire-tab">
+        <table class="table table-responsive text-light">
+            <tr>
+                <th>Jour</th>
+                <th>Horaire</th>
+            </tr>
+            <tr *ngFor="let horaire of horaires">
+                <td>{{horaire.jour}}</td>
+                <td>{{getHeureOuvertureFermeture(horaire)}}</td>
+            </tr>
+        </table>
+    </div>
 </div>
