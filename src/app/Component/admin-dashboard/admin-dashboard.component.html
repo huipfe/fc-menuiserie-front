@@ -1,34 +1,29 @@
-
 <div class="container-fluid">
-    <h1 class="titre-admin">Bienvenue dans l'espace administrateur</h1>
+    <h1 class="titre-admin">Bienvenue dans l'espace Administrateur !</h1>
+
     <mat-tab-group>
         <mat-tab label="Gérer les horaires">
-            <button mat-raised-button (click)="createHoraire()" style="margin-bottom: 2em;margin-top:1em;">
-                Créer un horaire</button>
-
-            <!-- Chargement -->
+            <button mat-raised-button (click)="createHoraire()" style="margin-bottom: 2em;margin-top:1em;">Créer un
+                horaire</button>
             <ng-container *ngIf="isLoading">
                 <mat-progress-spinner></mat-progress-spinner>
             </ng-container>
-            
-            <!-- Finis de charger, affiche tableau ou non -->
             <ng-container *ngIf="!isLoading">
-
-                <div *ngIf="horaires.length>0">
+                <div *ngIf="horaires.length > 0">
                     <table mat-table [dataSource]="horaires" class="mat-elevation-z8">
 
-                        <ng-container matcolumnDef="jour">
-                            <th mat-header-cell *matheadercelldef>jour</th>
+                        <ng-container matColumnDef="jour">
+                            <th mat-header-cell *matHeaderCellDef>jour</th>
                             <td mat-cell *matCellDef="let element">{{element.jour}}</td>
                         </ng-container>
 
-                        <ng-container matcolumndef="heure_matin">
+                        <ng-container matColumnDef="heure_matin">
                             <th mat-header-cell *matHeaderCellDef>heure matin</th>
                             <td mat-cell *matCellDef="let element">{{element.heure_matin}}</td>
                         </ng-container>
 
                         <ng-container matColumnDef="heure_apres_midi">
-                            <th mat-header-cell *matHeaderCellDef>heure apres midi</th>
+                            <th mat-header-cell *matHeaderCellDef>heure apres-midi</th>
                             <td mat-cell *matCellDef="let element">{{element.heure_apres_midi}}</td>
                         </ng-container>
 
@@ -36,24 +31,19 @@
                             <th mat-header-cell *matHeaderCellDef>actions</th>
                             <td mat-cell *matCellDef="let element">
                                 <a [matTooltip]="editer" (click)="editHoraire(element)"><i class="fa fa-edit"></i></a>
-                                <a [matTooltip]="supprimer" (click)="removeHoraire(element)"><i class="fa fa-edit">
-                                </i></a>
+                                <a [matTooltip]="supprimer" (click)="removeHoraire(element)"><i class="fa fa-remove"
+                                        style="color:red;"></i></a>
                             </td>
                         </ng-container>
-                        
-                        <tr mat-header-row *matHeaderRowDef="displayedColumnsHoraire"></tr>
-                        <tr mat-row *matRowDef="let row; columns: displayedColumnsHoraire;"></tr>
 
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsHoraire"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsHoraire"></tr>
                     </table>
                 </div>
-
-                <div *ngIf="horaires.length==0">
-                    <h2>Aucun horaire n'a été créé</h2>
+                <div *ngIf="horaires.length == 0">
+                    <h2>Pas d'horaire existant.</h2>
                 </div>
-
             </ng-container>
-            
         </mat-tab>
     </mat-tab-group>
 </div>
-

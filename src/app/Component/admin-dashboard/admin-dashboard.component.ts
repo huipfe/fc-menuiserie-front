@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { Horaire } from 'src/app/models/horaire/horaire.model';
 import { HoraireService } from 'src/app/service/horaire/horaire.service';
 import { MatDialog } from '@angular/material/dialog';
-import { PopinConfirmationComponent } from 'src/app/popin-confirmation/popin-confirmation.component';
+import { PopinConfirmationComponent } from 'src/app/popin/popin-confirmation/popin-confirmation.component';
 import { Jour } from 'src/app/models/enum/jour.enum';
-import { PopinHoraireComponent } from 'src/app/popin-horaire/popin-horaire.component';
+import { PopinHoraireComponent } from 'src/app/popin/popin-horaire/popin-horaire.component';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -19,7 +19,8 @@ isLoading = true;
 editer : string;
 supprimer: string;
 displayedColumnsHoraire : Array<string>;
-jours = Object.keys(Jour);
+jours: Array<string> = ["LUNDI", "MARDI", "MERCREDI", "JEUDI", "VENDREDI", "SAMEDI", "DIMANCHE", "FERIE"]
+
 
 constructor(public horaireService: HoraireService,
             public dialog:MatDialog) { 
@@ -30,15 +31,15 @@ constructor(public horaireService: HoraireService,
 }
 
 
-  ngOnInit(): void {
+  ngOnInit() {
+
     this.horaireService.getAllHoraires().subscribe(lesHoraires => {
-      lesHoraires.forEach((unHoraire : Horaire) => {
-        this.horaires.push(new Horaire (unHoraire));
+      lesHoraires.forEach((unHoraire: Horaire) => {
+        this.horaires.push(new Horaire(unHoraire));
       });
       this.isLoading = false;
     });
-}
-
+  }
 
   removeHoraire(element: Horaire) {
     const dialogRef = this.dialog.open(PopinConfirmationComponent);
@@ -51,40 +52,53 @@ constructor(public horaireService: HoraireService,
     })
   }
 
-  editHoraire(element : Horaire) {
-
+  editHoraire(element: Horaire) {
+    const dialogRef = this.dialog.open(PopinHoraireComponent, {
+      data: {
+        mode: Mode.EDIT,
+        horaire: element
+      }
+    });
+    dialogRef.componentInstance.onUpdate.subscribe(value => {
+      this.horaireService.updateHoraire(value.horaire_id, value).subscribe(response => {
+        this.horaires = this.horaires
+          .filter(horaire => horaire.horaire_id != value.horaire_id);
+        this.horaires.push(value);
+      });
+    });
   }
 
+
   createHoraire() {
-    if(this.getJourAvailable().length > 0) {
+    if (this.getJourAvailable().length > 0) {
       const dialogRef = this.dialog.open(PopinHoraireComponent, {
-        data : {
-          mode : Mode.CREATE,
-          jours : this.getJourAvailable
+        data: {
+          mode: Mode.CREATE,
+          jours: this.getJourAvailable()
         }
       });
       dialogRef.componentInstance.onSubmit.subscribe(event => {
-          this.horaireService.createHoraire(event).subscribe(response => {
-            this.horaires = []; 
-            this.horaires.getAllHoraires().subscribe(response => {
-              response.forEach((unHoraire : Horaire) => {
-                this.horaires.push(new Horaire(unHoraire));
-              });
+        this.horaireService.createHoraire(event).subscribe(response => {
+          this.horaires = [];
+          this.horaireService.getAllHoraires().subscribe(reponse => {
+            reponse.forEach(unHoraire => {
+              this.horaires.push(new Horaire(unHoraire));
             });
           });
+        });
       });
     }
   }
 
-  getJourAvailable() : Array<string> {
-    let jours : Array<string> = [];
+  getJourAvailable(): Array<string> {
+    let jours: Array<string> = [];
     this.jours.forEach(jour => {
-        let isAvailable = true; 
-        this.horaires.forEach(horaire => {
-          if (jour[horaire.jour] == jour) {
-                isAvailable = false;
-            }
-        });
+      let isAvailable = true;
+      this.horaires.forEach(horaire => {
+        if (Jour[horaire.jour] == jour) {
+          isAvailable = false;
+        }
+      });
       if (isAvailable) {
         jours.push(jour);
       }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import packageJson from '../../../package.json';
-import { Horaire } from '../models/horaire/horaire.model';
-import { HoraireService } from '../service/horaire/horaire.service';
+import packageJson from '../../../../package.json';
+import { Horaire } from '../../models/horaire/horaire.model';
+import { HoraireService } from '../../service/horaire/horaire.service';
 @Component({
   selector: 'app-footer',
   templateUrl: './footer.component.html',
