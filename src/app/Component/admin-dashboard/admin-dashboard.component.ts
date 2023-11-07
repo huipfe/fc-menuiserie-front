@@ -5,6 +5,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { PopinConfirmationComponent } from 'src/app/popin/popin-confirmation/popin-confirmation.component';
 import { Jour } from 'src/app/models/enum/jour.enum';
 import { PopinHoraireComponent } from 'src/app/popin/popin-horaire/popin-horaire.component';
+import { ToastService, ToastType } from 'src/app/service/toast/toast.service';
 
 @Component({
   selector: 'app-admin-dashboard',
@@ -23,7 +24,8 @@ jours: Array<string> = ["LUNDI", "MARDI", "MERCREDI", "JEUDI", "VENDREDI", "SAME
 
 
 constructor(public horaireService: HoraireService,
-            public dialog:MatDialog) { 
+            public dialog:MatDialog,
+            public toastService: ToastService) { 
   this.horaires = [];
   this.editer = "modifier";
   this.supprimer = "supprimer";
@@ -80,10 +82,12 @@ constructor(public horaireService: HoraireService,
       dialogRef.componentInstance.onSubmit.subscribe(event => {
         this.horaireService.createHoraire(event).subscribe(response => {
           this.horaires = [];
+          this.toastService.showToaster(ToastType.SUCCESS,'L\'horaire a bien été créé');
           this.horaireService.getAllHoraires().subscribe(reponse => {
             reponse.forEach(unHoraire => {
               this.horaires.push(new Horaire(unHoraire));
             });
+            
           });
         });
       });
